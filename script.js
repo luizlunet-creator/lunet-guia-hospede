@@ -1,21 +1,3 @@
-const ADDRESS = "Rua Professora Eroltides da Silva Fontes, 1500 - esquina com Rua Joaçaba, Itajaí - SC";
-const MAPS_URL = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(ADDRESS);
-const MAPS_EMBED_URL = "https://www.google.com/maps?q=" + encodeURIComponent(ADDRESS) + "&output=embed";
-const WHATSAPP_NUMBER = "5547997191415";
-const WIFI_NAME = "AIRBNB5";
-const WIFI_PASS = "Apartamento.05";
-const WIFI_NAME2 = "Airbnb06";
-const WIFI_PASS2 = "Apartamento.06";
-
-function placeGrid(items) {
-  return `<div class="place-grid">` + items.map(it => `
-    <div class="place-card">
-      <img src="${it.img}" alt="${it.name}" loading="lazy">
-      <span>${it.name}</span>
-    </div>
-  `).join("") + `</div>`;
-}
-
 const icons = {
   home: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 3 2 12h3v8h6v-6h2v6h6v-8h3Z"/></svg>',
   key: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M14 2a6 6 0 0 0-5.65 8.03L2 16.36V20h3.64l1.2-1.2h2v-2h2v-2h1.36l.99-.99A6 6 0 1 0 14 2Zm1.5 4.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Z"/></svg>',
@@ -30,290 +12,124 @@ const icons = {
   food: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M8 2v8a2 2 0 0 1-2 2v10H4V12a2 2 0 0 1-2-2V2h1.5v6H5V2h1.5v6H8V2ZM17 2c-2.2 0-4 2.7-4 6s1.8 6 4 6v8h2V2Z"/></svg>',
   cart: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M7 4h14l-1.5 9H8.4L7 4Zm0 0L6.4 2H3v2h2l3.6 15h11v-2H10L9.4 15h9.4l2-9H7.2Zm.8 17a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm10 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z"/></svg>',
   phone: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M6.6 10.8a15.9 15.9 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .6 3.6 1 1 0 0 1-.25 1Z"/></svg>',
-  church: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M13 1h-2v2H9v2h2v1.5L4 11v11h6v-6h4v6h6V11l-7-4.5V5h2V3h-2V1Zm-1 12a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>'
+  church: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M13 1h-2v2H9v2h2v1.5L4 11v11h6v-6h4v6h6V11l-7-4.5V5h2V3h-2V1Zm-1 12a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z"/></svg>',
+  star: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01Z"/></svg>'
 };
 
-const pages = {
-  bemvindo: {
-    title: "Bem-vindo",
-    icon: "home",
-    photo: "assets/bemvindo.jpg",
-    html: `
-      <div class="card">
-        <p>Seja muito bem-vindo ao <strong>Predio Lunet</strong>! Ficamos felizes em receber voce no Apartamento <strong>Airbnb5</strong>.</p>
-        <p>Este guia reune tudo o que voce precisa durante a estadia: acesso ao apartamento, wi-fi, regras da casa, dicas de passeios, restaurantes e muito mais. Basta navegar pelos icones no menu principal.</p>
-        <p>Qualquer duvida, estamos a um clique de distancia no botao de contato. Boa estadia! 🌿</p>
-      </div>
-    `
-  },
-  checkin: {
-    title: "Check-in",
-    icon: "key",
-    photo: "assets/checkin-hero-mobile.jpg",
-    html: `
-      <div class="card">
-        <h3>Horarios</h3>
-        <ul>
-          <li><strong>Check-in:</strong> das 15h00 as 22h00</li>
-          <li><strong>Check-out:</strong> ate as 11h00</li>
-        </ul>
-        <p class="note">Chegou fora desse horario? Avise pelo WhatsApp com antecedencia para combinarmos o acesso.</p>
-      </div>
-    `
-  },
-  localizacao: {
-    title: "Localização",
-    icon: "pin",
-    html: `
-      <div class="card">
-        <h3>Endereço</h3>
-        <p>${ADDRESS}</p>
-        <a class="btn-link" href="${MAPS_URL}" target="_blank" rel="noopener">📍 Abrir no Google Maps</a>
-      </div>
-      <div class="card map-card">
-        <iframe class="map-embed" src="${MAPS_EMBED_URL}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa da localização"></iframe>
-      </div>
-      <div class="card">
-        <h3>Estacionamento</h3>
-        <p>Ha estacionamento disponivel em frente ao predio.</p>
-      </div>
-    `
-  },
-  wifi: {
-    title: "Wi-Fi",
-    icon: "wifi",
-    html: `
-      <h3>Apartamento Airbnb5</h3>
-      <div class="card wifi-box">
-        <div class="info">
-          <span class="label">Rede</span>
-          <span class="value">${WIFI_NAME}</span>
-        </div>
-        <button class="copy-btn" data-copy="${WIFI_NAME}">Copiar</button>
-      </div>
-      <div class="card wifi-box">
-        <div class="info">
-          <span class="label">Senha</span>
-          <span class="value">${WIFI_PASS}</span>
-        </div>
-        <button class="copy-btn" data-copy="${WIFI_PASS}">Copiar</button>
-      </div>
+const ICON_KEYS = Object.keys(icons);
 
-      <h3>Apartamento Airbnb06</h3>
-      <div class="card wifi-box">
-        <div class="info">
-          <span class="label">Rede</span>
-          <span class="value">${WIFI_NAME2}</span>
-        </div>
-        <button class="copy-btn" data-copy="${WIFI_NAME2}">Copiar</button>
-      </div>
-      <div class="card wifi-box">
-        <div class="info">
-          <span class="label">Senha</span>
-          <span class="value">${WIFI_PASS2}</span>
-        </div>
-        <button class="copy-btn" data-copy="${WIFI_PASS2}">Copiar</button>
-      </div>
-    `
-  },
-  regras: {
-    title: "Regras",
-    icon: "rules",
-    html: `
-      <div class="card">
-        <h3>Regras da casa</h3>
-        <ul>
-          <li>Silencio das 22h as 8h — sem festas, baderna ou gritaria</li>
-          <li>Proibido fumar ou usar substancias ilicitas no imovel</li>
-          <li>Numero maximo de hospedes conforme reserva; visitantes so com autorizacao previa</li>
-          <li>Criancas sempre sob supervisao dos responsaveis</li>
-          <li>Cuide da casa: nao mova moveis e nao jogue objetos no vaso sanitario</li>
-          <li>Alimentos e bebidas apenas fora dos quartos; lave a louca antes de sair</li>
-          <li>Desligue luzes, ar-condicionado e eletronicos, feche portas e janelas ao sair</li>
-          <li>Tire o lixo e nao deixe acumular dentro do apartamento</li>
-          <li>Informe imediatamente qualquer dano, problema ou atraso no check-in/check-out</li>
-          <li>Respeite vizinhos e areas comuns, e economize agua durante a estadia</li>
-        </ul>
-      </div>
-    `
-  },
-  transportes: {
-    title: "Transportes",
-    icon: "car",
-    html: `
-      <div class="card">
-        <h3>Estacionamento</h3>
-        <p>Vaga disponivel em frente ao predio.</p>
-      </div>
-      <div class="card">
-        <h3>Apps de transporte</h3>
-        <p>Uber e 99 funcionam bem na regiao, e uma otima opcao para se deslocar sem preocupacao.</p>
-      </div>
-      <div class="card">
-        <h3>A pe</h3>
-        <p>O centro de Itajai e o bairro Sao Vicente ficam a poucos minutos a pe, com facil acesso a comercio e restaurantes.</p>
-        <p class="note">Sugestao do anfitriao — sinta-se a vontade para pedir mais detalhes pelo contato.</p>
-      </div>
-    `
-  },
-  equipamento: {
-    title: "Equipamento",
-    icon: "tools",
-    html: `
-      <div class="card">
-        <h3>O apartamento conta com</h3>
-        <ul>
-          <li>Air fryer</li>
-          <li>Cafeteira</li>
-          <li>Sanduicheira</li>
-          <li>Chaleira eletrica</li>
-          <li>Secador de cabelo</li>
-          <li>Aquecedor</li>
-          <li>Ar-condicionado</li>
-          <li>TV</li>
-          <li>Geladeira</li>
-        </ul>
-        <p class="note">Precisa de ajuda para usar algum equipamento? Fale com a gente pelo WhatsApp.</p>
-      </div>
-    `
-  },
-  atividades: {
-    title: "Atividades",
-    icon: "play",
-    html: `
-      <div class="card">
-        <h3>O que fazer por perto</h3>
-        ${placeGrid([
-          {img:"assets/photos/praia-atalaia.jpg", name:"Praia da Atalaia"},
-          {img:"assets/photos/bico-papagaio.jpg", name:"Bico do Papagaio"},
-          {img:"assets/photos/marejada.jpg", name:"Marejada"},
-          {img:"assets/photos/porto-itajai.jpg", name:"Porto de Itajaí"},
-          {img:"assets/photos/igreja-matriz.jpg", name:"Igreja Matriz"},
-          {img:"assets/photos/museu.jpg", name:"Museu"},
-          {img:"assets/photos/estadio.jpg", name:"Estádio Marcílio Dias"}
-        ])}
-      </div>
-    `
-  },
-  informacao: {
-    title: "Informação",
-    icon: "info",
-    html: `
-      <div class="card">
-        <h3>Resumo rapido</h3>
-        <ul>
-          <li>Check-in: 15h - 22h | Check-out: ate 11h</li>
-          <li>Wi-Fi: ${WIFI_NAME} / ${WIFI_PASS}</li>
-          <li>Estacionamento em frente ao predio</li>
-          <li>Duvidas ou emergencias: use o contato do host</li>
-        </ul>
-      </div>
-    `
-  },
-  bares: {
-    title: "Bares e Clubes",
-    icon: "glass",
-    html: `
-      <div class="card">
-        <h3>Vida noturna</h3>
-        <p>Itajai e regiao contam com opcoes de bares e casas noturnas, especialmente na epoca da Marejada.</p>
-        <p class="note">Sugestao do anfitriao — peca recomendacoes atualizadas pelo contato para o dia da sua visita.</p>
-      </div>
-    `
-  },
-  igreja: {
-    title: "Igreja Evangélica",
-    icon: "church",
-    html: `
-      <div class="card">
-        <h3>Igrejas próximas</h3>
-        ${placeGrid([
-          {img:"assets/photos/igreja-mevam.jpg", name:"Igreja Mevam"},
-          {img:"assets/photos/igreja-assembleia.jpg", name:"Igreja Assembleia de Deus"}
-        ])}
-      </div>
-    `
-  },
-  restaurantes: {
-    title: "Restaurantes",
-    icon: "food",
-    html: `
-      <div class="card">
-        <h3>Recomendados</h3>
-        ${placeGrid([
-          {img:"assets/photos/vovo-zena.jpg", name:"Restaurante e Pizzaria Vovó Zena"},
-          {img:"assets/photos/dom-camilo.jpg", name:"Pizzaria Dom Camilo"},
-          {img:"assets/photos/varandao.jpg", name:"Varandão"},
-          {img:"assets/photos/mottas.jpg", name:"Pizzaria Mottas"},
-          {img:"assets/photos/jumbo.jpg", name:"Hamburgueria Jumbo"},
-          {img:"assets/photos/xburguinho.jpg", name:"XBurguinho"}
-        ])}
-        <p class="note">Ha tambem diversas outras opcoes no bairro Sao Vicente, bem pertinho.</p>
-      </div>
-    `
-  },
-  compras: {
-    title: "Compras",
-    icon: "cart",
-    html: `
-      <div class="card">
-        <h3>Mercados e lojas</h3>
-        ${placeGrid([
-          {img:"assets/photos/uber.jpg", name:"Supermercado Uber"},
-          {img:"assets/photos/cinthya.jpg", name:"Padaria Cinthya"},
-          {img:"assets/photos/loja-lunet-fachada.jpg", name:"Loja Lunet"},
-          {img:"assets/photos/mercado-copa.jpg", name:"Mercado Copa"},
-          {img:"assets/photos/itajai-shopping.jpg", name:"Itajaí Shopping"},
-          {img:"assets/photos/passeio-sao-vicente.jpg", name:"Passeio São Vicente"},
-          {img:"assets/photos/compre-fort.jpg", name:"Mercado Compre Fort"}
-        ])}
-      </div>
-    `
-  },
-  contato: {
-    title: "Contato",
-    icon: "phone",
-    html: `
-      <div class="card">
-        <h3>Precisa de algo?</h3>
-        <p>Fale diretamente com o anfitriao pelo WhatsApp, estamos por aqui para ajudar durante toda a sua estadia.</p>
-        <a class="contact-btn" id="contact-whatsapp" target="_blank" rel="noopener">
-          ${icons.phone} Chamar no WhatsApp
-        </a>
-      </div>
-    `
-  }
-};
+function placeGrid(items) {
+  return `<div class="place-grid">` + (items || []).map((it, i) => `
+    <div class="place-card">
+      <img src="${it.img}" alt="${it.name}" loading="lazy">
+      <span>${it.name}</span>
+    </div>
+  `).join("") + `</div>`;
+}
 
-const menuOrder = ["bemvindo","checkin","localizacao","wifi","regras","transportes","equipamento","atividades","informacao","bares","igreja","restaurantes","compras","contato"];
+function renderBlocks(blocks) {
+  return (blocks || []).map(b => {
+    if (b.type === "text") {
+      if (b.muted) return `<div class="card"><p class="note">${b.text || ""}</p></div>`;
+      return `<div class="card">${b.heading ? `<h3>${b.heading}</h3>` : ""}<p>${b.text || ""}</p></div>`;
+    }
+    if (b.type === "list") {
+      return `<div class="card">${b.heading ? `<h3>${b.heading}</h3>` : ""}<ul>${(b.items || []).map(i => `<li>${i}</li>`).join("")}</ul></div>`;
+    }
+    if (b.type === "gallery") {
+      return `<div class="card">${b.heading ? `<h3>${b.heading}</h3>` : ""}${placeGrid(b.items)}</div>`;
+    }
+    return "";
+  }).join("");
+}
+
+function mapsUrlFor(address) {
+  return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(address);
+}
+function mapsEmbedFor(address) {
+  return "https://www.google.com/maps?q=" + encodeURIComponent(address) + "&output=embed";
+}
+
+function renderWifi() {
+  return SITE_CONTENT.property.wifiNetworks.map(w => `
+    <h3>${w.label}</h3>
+    <div class="card wifi-box">
+      <div class="info"><span class="label">Rede</span><span class="value">${w.network}</span></div>
+      <button class="copy-btn" data-copy="${w.network}">Copiar</button>
+    </div>
+    <div class="card wifi-box">
+      <div class="info"><span class="label">Senha</span><span class="value">${w.password}</span></div>
+      <button class="copy-btn" data-copy="${w.password}">Copiar</button>
+    </div>
+  `).join("");
+}
+
+function renderLocalizacao() {
+  const address = SITE_CONTENT.property.address;
+  const extra = SITE_CONTENT.pages.localizacao.blocks[0] || {};
+  return `
+    <div class="card">
+      <h3>Endereço</h3>
+      <p>${address}</p>
+      <a class="btn-link" href="${mapsUrlFor(address)}" target="_blank" rel="noopener">📍 Abrir no Google Maps</a>
+    </div>
+    <div class="card map-card">
+      <iframe class="map-embed" src="${mapsEmbedFor(address)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Mapa da localização"></iframe>
+    </div>
+    <div class="card">
+      <h3>${extra.heading || ""}</h3>
+      <p>${extra.text || ""}</p>
+    </div>
+  `;
+}
+
+function renderContato() {
+  const b = SITE_CONTENT.pages.contato.blocks[0] || {};
+  return `
+    <div class="card">
+      <h3>${b.heading || ""}</h3>
+      <p>${b.text || ""}</p>
+      <a class="contact-btn" id="contact-whatsapp" href="https://wa.me/${SITE_CONTENT.property.whatsapp}" target="_blank" rel="noopener">
+        ${icons.phone} Chamar no WhatsApp
+      </a>
+    </div>
+  `;
+}
 
 const grid = document.getElementById("menu-grid");
-menuOrder.forEach(key => {
-  const p = pages[key];
-  const btn = document.createElement("button");
-  btn.className = "menu-item";
-  btn.innerHTML = `<div class="icon-wrap">${icons[p.icon]}</div><span>${p.title}</span>`;
-  btn.addEventListener("click", () => openPage(key));
-  grid.appendChild(btn);
-});
-
-document.getElementById("whatsapp-link").href = `https://wa.me/${WHATSAPP_NUMBER}`;
-
+const whatsappLink = document.getElementById("whatsapp-link");
 const viewHome = document.getElementById("view-home");
 const viewPage = document.getElementById("view-page");
+const viewEditor = document.getElementById("view-editor");
 const pageTitle = document.getElementById("page-title");
 const pageContent = document.getElementById("page-content");
 
-function openPage(key) {
-  const p = pages[key];
-  pageTitle.textContent = p.title;
-  const photoHtml = p.photo
-    ? `<div class="page-photo"><img src="${p.photo}" alt="${p.title}"></div>`
-    : "";
-  pageContent.innerHTML = photoHtml + p.html;
+function buildMenu() {
+  grid.innerHTML = "";
+  SITE_CONTENT.menuOrder.forEach(key => {
+    const p = SITE_CONTENT.pages[key];
+    if (!p) return;
+    const btn = document.createElement("button");
+    btn.className = "menu-item";
+    btn.innerHTML = `<div class="icon-wrap">${icons[p.icon] || icons.star}</div><span>${p.title}</span>`;
+    btn.addEventListener("click", () => openPage(key));
+    grid.appendChild(btn);
+  });
+}
 
-  const wa = document.getElementById("contact-whatsapp");
-  if (wa) wa.href = `https://wa.me/${WHATSAPP_NUMBER}`;
+function openPage(key) {
+  const p = SITE_CONTENT.pages[key];
+  if (!p) return;
+  pageTitle.textContent = p.title;
+  const photoHtml = p.photo ? `<div class="page-photo"><img src="${p.photo}" alt="${p.title}"></div>` : "";
+
+  let bodyHtml;
+  if (p.special === "wifi") bodyHtml = renderWifi();
+  else if (p.special === "localizacao") bodyHtml = renderLocalizacao();
+  else if (p.special === "contato") bodyHtml = renderContato();
+  else bodyHtml = renderBlocks(p.blocks);
+
+  pageContent.innerHTML = photoHtml + bodyHtml;
 
   pageContent.querySelectorAll(".copy-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -325,12 +141,307 @@ function openPage(key) {
     });
   });
 
-  viewHome.dataset.active = "false";
-  viewPage.dataset.active = "true";
+  pageContent.querySelectorAll("img").forEach(img => {
+    img.classList.add("zoomable");
+    img.addEventListener("click", () => openLightbox(img.src, img.alt));
+  });
+
+  showView(viewPage);
   window.scrollTo(0, 0);
 }
 
-document.getElementById("back-btn").addEventListener("click", () => {
-  viewPage.dataset.active = "false";
-  viewHome.dataset.active = "true";
+function showView(view) {
+  [viewHome, viewPage, viewEditor].forEach(v => { v.dataset.active = "false"; });
+  view.dataset.active = "true";
+}
+
+document.getElementById("back-btn").addEventListener("click", () => showView(viewHome));
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+
+function openLightbox(src, alt) {
+  lightboxImg.src = src;
+  lightboxImg.alt = alt || "";
+  lightbox.dataset.active = "true";
+}
+function closeLightbox() {
+  lightbox.dataset.active = "false";
+  lightboxImg.src = "";
+}
+document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+lightbox.addEventListener("click", e => { if (e.target === lightbox) closeLightbox(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLightbox(); });
+
+function init() {
+  buildMenu();
+  whatsappLink.href = `https://wa.me/${SITE_CONTENT.property.whatsapp}`;
+}
+init();
+
+/* ---------------- Painel Editar ---------------- */
+
+const editGate = document.getElementById("edit-gate");
+const editPasswordInput = document.getElementById("edit-password-input");
+const editorContent = document.getElementById("editor-content");
+
+document.getElementById("edit-fab").addEventListener("click", () => {
+  editPasswordInput.value = "";
+  editGate.dataset.active = "true";
+  setTimeout(() => editPasswordInput.focus(), 50);
 });
+document.getElementById("edit-gate-cancel").addEventListener("click", () => {
+  editGate.dataset.active = "false";
+});
+document.getElementById("edit-password-submit").addEventListener("click", trySubmitPassword);
+editPasswordInput.addEventListener("keydown", e => { if (e.key === "Enter") trySubmitPassword(); });
+
+function trySubmitPassword() {
+  if (editPasswordInput.value === SITE_CONTENT.property.editPassword) {
+    editGate.dataset.active = "false";
+    renderEditor();
+    showView(viewEditor);
+  } else {
+    editPasswordInput.value = "";
+    editPasswordInput.placeholder = "Senha incorreta, tente de novo";
+  }
+}
+
+document.getElementById("editor-close-btn").addEventListener("click", () => {
+  buildMenu();
+  showView(viewHome);
+});
+
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function iconOptions(selected) {
+  return ICON_KEYS.map(k => `<option value="${k}" ${k === selected ? "selected" : ""}>${k}</option>`).join("");
+}
+
+function renderEditor() {
+  const keys = SITE_CONTENT.menuOrder;
+  const specialKeys = ["wifi", "localizacao", "contato"];
+
+  let html = `
+    <div class="card">
+      <p>Edite as abas e fotos do guia. Quando terminar, clique em <strong>baixar arquivo atualizado</strong> e substitua o <code>content.js</code> do site (ou peca pra Claude publicar de novo).</p>
+      <button class="btn-link" id="export-btn">⬇ Baixar content.js atualizado</button>
+    </div>
+    <div class="card">
+      <h3>Adicionar nova aba</h3>
+      <input class="edit-input" id="new-tab-title" placeholder="Nome da aba (ex: Academia)">
+      <select class="edit-input" id="new-tab-icon">${iconOptions("star")}</select>
+      <button class="btn-link" id="add-tab-btn">+ Adicionar aba</button>
+    </div>
+  `;
+
+  keys.forEach(key => {
+    const p = SITE_CONTENT.pages[key];
+    if (!p) return;
+    const isSpecial = specialKeys.includes(key);
+    html += `
+      <div class="card edit-tab-card">
+        <div class="edit-tab-row">
+          <div class="icon-wrap">${icons[p.icon] || icons.star}</div>
+          <strong>${p.title}</strong>
+          ${isSpecial ? '<span class="note">(aba especial)</span>' : ""}
+        </div>
+        <label>Titulo</label>
+        <input class="edit-input" data-field="title" data-key="${key}" value="${p.title}">
+        <label>Icone</label>
+        <select class="edit-input" data-field="icon" data-key="${key}">${iconOptions(p.icon)}</select>
+        <label>Foto de topo (opcional)</label>
+        <input type="file" accept="image/*" class="edit-input" data-photo-key="${key}">
+        ${p.photo ? `<img class="edit-thumb" src="${p.photo}" alt="">` : ""}
+        <div class="edit-blocks" id="blocks-${key}"></div>
+        ${!isSpecial ? `
+          <div class="edit-add-block-row">
+            <button class="mini-btn" data-add-block="text" data-key="${key}">+ Texto</button>
+            <button class="mini-btn" data-add-block="list" data-key="${key}">+ Lista</button>
+            <button class="mini-btn" data-add-block="gallery" data-key="${key}">+ Galeria</button>
+          </div>
+        ` : ""}
+        <div class="edit-tab-actions">
+          <button class="mini-btn" data-save-key="${key}">Salvar aba</button>
+          ${!isSpecial ? `<button class="mini-btn danger" data-delete-key="${key}">Excluir aba</button>` : ""}
+        </div>
+      </div>
+    `;
+  });
+
+  editorContent.innerHTML = html;
+  keys.forEach(key => {
+    const p = SITE_CONTENT.pages[key];
+    if (p && !specialKeys.includes(key)) renderBlockEditors(key);
+  });
+  wireEditorEvents();
+}
+
+function renderBlockEditors(key) {
+  const container = document.getElementById(`blocks-${key}`);
+  if (!container) return;
+  const blocks = SITE_CONTENT.pages[key].blocks;
+  container.innerHTML = blocks.map((b, i) => {
+    if (b.type === "text") {
+      return `
+        <div class="edit-block">
+          <label>Texto ${b.muted ? "(nota discreta)" : ""}</label>
+          <input class="edit-input" data-block-field="heading" data-key="${key}" data-index="${i}" placeholder="Titulo (opcional)" value="${b.heading || ""}">
+          <textarea class="edit-input" data-block-field="text" data-key="${key}" data-index="${i}" rows="3">${b.text || ""}</textarea>
+          <button class="mini-btn danger" data-remove-block data-key="${key}" data-index="${i}">Remover bloco</button>
+        </div>
+      `;
+    }
+    if (b.type === "list") {
+      return `
+        <div class="edit-block">
+          <label>Lista</label>
+          <input class="edit-input" data-block-field="heading" data-key="${key}" data-index="${i}" placeholder="Titulo (opcional)" value="${b.heading || ""}">
+          <textarea class="edit-input" data-block-field="items" data-key="${key}" data-index="${i}" rows="4" placeholder="Um item por linha">${(b.items || []).join("\n")}</textarea>
+          <button class="mini-btn danger" data-remove-block data-key="${key}" data-index="${i}">Remover bloco</button>
+        </div>
+      `;
+    }
+    if (b.type === "gallery") {
+      return `
+        <div class="edit-block">
+          <label>Galeria de fotos</label>
+          <input class="edit-input" data-block-field="heading" data-key="${key}" data-index="${i}" placeholder="Titulo (opcional)" value="${b.heading || ""}">
+          <div class="edit-gallery-list">
+            ${(b.items || []).map((it, gi) => `
+              <div class="edit-gallery-item">
+                <img class="edit-thumb-sm" src="${it.img}" alt="">
+                <input class="edit-input" data-gallery-name data-key="${key}" data-index="${i}" data-gindex="${gi}" value="${it.name}">
+                <button class="mini-btn danger" data-remove-photo data-key="${key}" data-index="${i}" data-gindex="${gi}">x</button>
+              </div>
+            `).join("")}
+          </div>
+          <input type="file" accept="image/*" class="edit-input" data-add-photo data-key="${key}" data-index="${i}">
+          <button class="mini-btn danger" data-remove-block data-key="${key}" data-index="${i}">Remover bloco</button>
+        </div>
+      `;
+    }
+    return "";
+  }).join("");
+}
+
+function wireEditorEvents() {
+  document.getElementById("add-tab-btn").addEventListener("click", () => {
+    const title = document.getElementById("new-tab-title").value.trim();
+    const icon = document.getElementById("new-tab-icon").value;
+    if (!title) return;
+    const key = "tab_" + Date.now();
+    SITE_CONTENT.pages[key] = { title, icon, blocks: [] };
+    SITE_CONTENT.menuOrder.push(key);
+    renderEditor();
+  });
+
+  document.getElementById("export-btn").addEventListener("click", exportContent);
+
+  editorContent.querySelectorAll("[data-save-key]").forEach(btn => {
+    btn.addEventListener("click", () => saveTab(btn.dataset.saveKey));
+  });
+  editorContent.querySelectorAll("[data-delete-key]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.deleteKey;
+      if (!confirm(`Excluir a aba "${SITE_CONTENT.pages[key].title}"?`)) return;
+      delete SITE_CONTENT.pages[key];
+      SITE_CONTENT.menuOrder = SITE_CONTENT.menuOrder.filter(k => k !== key);
+      renderEditor();
+    });
+  });
+  editorContent.querySelectorAll("[data-add-block]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      const type = btn.dataset.addBlock;
+      const blank = type === "gallery" ? { type, items: [] } : type === "list" ? { type, items: [] } : { type, text: "" };
+      SITE_CONTENT.pages[key].blocks.push(blank);
+      renderBlockEditors(key);
+      wireEditorEvents();
+    });
+  });
+  editorContent.querySelectorAll("[data-remove-block]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      const index = Number(btn.dataset.index);
+      SITE_CONTENT.pages[key].blocks.splice(index, 1);
+      renderBlockEditors(key);
+      wireEditorEvents();
+    });
+  });
+  editorContent.querySelectorAll("[data-remove-photo]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      const index = Number(btn.dataset.index);
+      const gindex = Number(btn.dataset.gindex);
+      SITE_CONTENT.pages[key].blocks[index].items.splice(gindex, 1);
+      renderBlockEditors(key);
+      wireEditorEvents();
+    });
+  });
+  editorContent.querySelectorAll("[data-add-photo]").forEach(input => {
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      if (!file) return;
+      const dataUrl = await fileToDataUrl(file);
+      const key = input.dataset.key;
+      const index = Number(input.dataset.index);
+      SITE_CONTENT.pages[key].blocks[index].items.push({ img: dataUrl, name: file.name.replace(/\.[a-z]+$/i, "") });
+      renderBlockEditors(key);
+      wireEditorEvents();
+    });
+  });
+  editorContent.querySelectorAll("[data-photo-key]").forEach(input => {
+    input.addEventListener("change", async () => {
+      const file = input.files[0];
+      if (!file) return;
+      const dataUrl = await fileToDataUrl(file);
+      SITE_CONTENT.pages[input.dataset.photoKey].photo = dataUrl;
+    });
+  });
+}
+
+function saveTab(key) {
+  const p = SITE_CONTENT.pages[key];
+  const titleInput = editorContent.querySelector(`[data-field="title"][data-key="${key}"]`);
+  const iconInput = editorContent.querySelector(`[data-field="icon"][data-key="${key}"]`);
+  if (titleInput) p.title = titleInput.value.trim() || p.title;
+  if (iconInput) p.icon = iconInput.value;
+
+  editorContent.querySelectorAll(`[data-block-field][data-key="${key}"]`).forEach(el => {
+    const index = Number(el.dataset.index);
+    const field = el.dataset.blockField;
+    const block = p.blocks[index];
+    if (!block) return;
+    if (field === "items") block.items = el.value.split("\n").map(s => s.trim()).filter(Boolean);
+    else block[field] = el.value;
+  });
+  editorContent.querySelectorAll(`[data-gallery-name][data-key="${key}"]`).forEach(el => {
+    const index = Number(el.dataset.index);
+    const gindex = Number(el.dataset.gindex);
+    const block = p.blocks[index];
+    if (block && block.items && block.items[gindex]) block.items[gindex].name = el.value;
+  });
+
+  alert(`Aba "${p.title}" salva na memoria. Lembre de baixar o content.js atualizado no final.`);
+  buildMenu();
+  renderEditor();
+}
+
+function exportContent() {
+  const text = "// Todo o conteudo editavel do site vive aqui.\nconst SITE_CONTENT = " + JSON.stringify(SITE_CONTENT, null, 2) + ";\n";
+  const blob = new Blob([text], { type: "text/javascript" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "content.js";
+  a.click();
+  URL.revokeObjectURL(url);
+}
