@@ -29,7 +29,7 @@ const SITE_CONTENT = {
     checkin: {
       title: "Check-in",
       icon: "key",
-      photos: ["assets/checkin-hero-mobile.jpg"],
+      photos: ["assets/checkin-hero-mobile.jpg", "assets/checkin-entrada.jpg"],
       blocks: [
         { type: "list", heading: "Horarios", items: ["<strong>Check-in:</strong> das 15h00 as 22h00", "<strong>Check-out:</strong> ate as 11h00"] },
         { type: "text", muted: true, text: "Chegou fora desse horario? Avise pelo WhatsApp com antecedencia para combinarmos o acesso." }
