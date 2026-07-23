@@ -19,7 +19,7 @@ const SITE_CONTENT = {
     bemvindo: {
       title: "Bem-vindo",
       icon: "home",
-      photo: "assets/bemvindo.jpg",
+      photos: ["assets/bemvindo.jpg"],
       blocks: [
         { type: "text", text: "Seja muito bem-vindo ao <strong>Predio Lunet</strong>! Ficamos felizes em receber voce no Apartamento <strong>Airbnb5</strong>." },
         { type: "text", text: "Este guia reune tudo o que voce precisa durante a estadia: acesso ao apartamento, wi-fi, regras da casa, dicas de passeios, restaurantes e muito mais. Basta navegar pelos icones no menu principal." },
@@ -29,7 +29,7 @@ const SITE_CONTENT = {
     checkin: {
       title: "Check-in",
       icon: "key",
-      photo: "assets/checkin-hero-mobile.jpg",
+      photos: ["assets/checkin-hero-mobile.jpg"],
       blocks: [
         { type: "list", heading: "Horarios", items: ["<strong>Check-in:</strong> das 15h00 as 22h00", "<strong>Check-out:</strong> ate as 11h00"] },
         { type: "text", muted: true, text: "Chegou fora desse horario? Avise pelo WhatsApp com antecedencia para combinarmos o acesso." }

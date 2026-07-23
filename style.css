@@ -263,6 +263,48 @@ body{
   display:block;
 }
 
+.page-photo-carousel{
+  display:flex;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  border-radius:var(--radius);
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.page-photo-carousel::-webkit-scrollbar{display:none;}
+.page-photo-slide{
+  flex:0 0 100%;
+  scroll-snap-align:start;
+  aspect-ratio:16/10;
+  overflow:hidden;
+}
+.page-photo-slide img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.photo-dots{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+  margin:8px 0 16px;
+}
+.photo-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:rgba(244,251,238,.3);
+  border:0;
+  padding:0;
+  cursor:pointer;
+}
+.photo-dot.active{
+  background:var(--green-lime);
+  width:18px;
+  border-radius:4px;
+}
+
 .map-card{
   padding:0;
   overflow:hidden;
@@ -520,3 +562,20 @@ textarea.edit-input{resize:vertical;}
   flex:none;
 }
 .edit-gallery-item .edit-input{margin-bottom:0;}
+.edit-gallery-item .replace-btn{
+  display:inline-flex;
+  align-items:center;
+  flex:none;
+  margin:0;
+  text-transform:none;
+  letter-spacing:normal;
+  color:var(--white);
+  font-size:12px;
+}
+.hidden-file-input{
+  position:absolute;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+  opacity:0;
+}
